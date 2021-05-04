@@ -1,6 +1,8 @@
 import * as handlerIndex from '../handler';
 import * as handlerUser from '../handlers/users';
 import * as handlerStartWards from '../handlers/startwards';
+import eventGenerator from './eventGenerator';
+
 const { v4: uuidv4 } = require('uuid');
 
 const uuid = uuidv4()
@@ -17,20 +19,22 @@ test('index', async () => {
 });
 
 test('postUser', async () => {
-  const event = {
+
+  jest.setTimeout(10000);
+
+  const event = eventGenerator({
     body: {
       id: uuid,
       last_name: "test_"+Math.random().toString(36).substring(3),
       first_name: "test_"+Math.random().toString(36).substring(3),
       phone: "+51918558986",
       email: "hugo.93wal@gmail.com"
-    }
-  };
-  console.log("-----------------A")
-  console.log("1: ",JSON.parse(event))
-  console.log("1: ",JSON.stringify(event))
-  console.log("-----------------FIN")
+    },
+    method: "post"
+  });
+
   const context = {};
+  
   const callback = (error, response) => {
     expect(response.statusCode).toEqual(201);
     // expect(typeof response.body).toBe("string");
@@ -40,12 +44,10 @@ test('postUser', async () => {
 });
 
 test('getUsersAll', async () => {
-  const event = 'event';
+  const event = {};
   const context = {};
   const callback = (error, response) => {
-    console.log("getUsersAll: ",response.data)
     expect(response.statusCode).toEqual(200);
-    // expect(typeof response.body).toBe("string");
   };
 
   await handlerUser.getUsersAll(event, context, callback);
@@ -53,16 +55,18 @@ test('getUsersAll', async () => {
 
 
 test('getUser', async () => {
-  const event = {
-    pathParameters:{
+  jest.setTimeout(10000);
+
+  const event = eventGenerator({
+    pathParameters: {
       user_id: uuid
-    }
-  };
+    },
+    method: "get"
+  });
 
   const context = {};
   const callback = (error, response) => {
-    console.log("getUser: ",response.data)
-    expect(response.statusCode).toEqual(200);
+    expect(response.git).toEqual(200);
     // expect(typeof response.body).toBe("string");
   };
 
@@ -70,38 +74,43 @@ test('getUser', async () => {
 });
 
 test('updateUser', async () => {
-  const event = {
-    pathParameters: uuid,
+
+  jest.setTimeout(10000);
+
+  const event = eventGenerator({
+    pathParameters: {
+      user_id: uuid,
+    },
     body: {
       "id": uuid,
       "last_name": "test_"+Math.random().toString(36).substring(3),
       "first_name": "test_"+Math.random().toString(36).substring(3),
       "phone": "+51918558986",
       "email": "hugo.93wal@gmail.com"
-    }
-  };
+    },
+    method: "put"
+  });
 
   const context = {};
   const callback = (error, response) => {
-    console.log("updateUser: ",response.data)
     expect(response.statusCode).toEqual(200);
-    // expect(typeof response.body).toBe("string");
   };
 
   await handlerUser.updateUser(event, context, callback);
 });
 
 test('deleteUser', async () => {
-  const event = {
+  jest.setTimeout(10000);
+  const event = eventGenerator({
     pathParameters: {
-      user_id: uuid
-    }
-  };
+      user_id: uuid,
+    },
+    method: "delete"
+  });
+
   const context = {};
   const callback = (error, response) => {
-    console.log("deleteUser: ",response.data)
     expect(response.statusCode).toEqual(200);
-    // expect(typeof response.body).toBe("string");
   };
 
   await handlerUser.deleteUser(event, context, callback);
@@ -109,13 +118,15 @@ test('deleteUser', async () => {
 
 test('getStartWardsPersons', async () => {
 
-  const event={
-    "pathParameters":{"person_id":"1"}
-  }
+  const event = eventGenerator({
+    pathParameters: {
+      person_id: "1",
+    },
+    method: "get"
+  });
 
   const context = {};
   const callback = (error, response) => {
-    console.log("getStartWardsPersons: ",response)
     expect(response.statusCode).toEqual(200);
     // expect(typeof response.body).toBe("string");
   };

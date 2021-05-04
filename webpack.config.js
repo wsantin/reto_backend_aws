@@ -6,7 +6,13 @@ module.exports = {
   target: 'node',
   mode: slsw.lib.webpack.isLocal ? 'development' : 'production',
   stats: 'minimal',
-  devtool: 'nosources-source-map',
+  devtool: slsw.lib.webpack.isLocal
+    ? 'eval-cheap-module-source-map'
+    : 'source-map',
+  optimization: {
+    concatenateModules: false,
+    minimize: false,
+  },
   performance: {
     hints: false,
   },

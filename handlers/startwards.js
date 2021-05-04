@@ -4,11 +4,11 @@ import apiClient from '../api/axios'
 
 //Obtener la informacion de un registro
 export const getStartWardsPersons = async (event, context, callback) => {
+
   const id = event.pathParameters.person_id;
   const url_people = `/api/people/${id}/`;
-
-  const result = await apiClient.get(url_people)
   
+  const result = await apiClient.get(url_people)
   if(result.status !== 200)
     return callback(null, response(500, {
       status:'error: ',

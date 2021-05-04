@@ -12,7 +12,8 @@ if (IS_OFFLINE === 'true') {
     })
 }
 else{
-  clientDynamoDb = new AWS.DynamoDB.DocumentClient();
+  clientDynamoDb = new AWS.DynamoDB.DocumentClient({
+    region: DYNAMODB_REGION
+  });
 };
-
 export default clientDynamoDb

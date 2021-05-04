@@ -14,7 +14,6 @@ const DYNAMODB_TABLE =  String(process.env.AWS_DYNAMODB_TABLE);
 export const postUser = async (event, context, callback) => {
   try {
     const reqBody = JSON.parse(event.body);
-    
     const data = {
       TableName: DYNAMODB_TABLE,
       Item: {
@@ -47,7 +46,7 @@ export const getUsersAll = async (event, context, callback) => {
 
     let result = await clientDynamoDb.scan({TableName: DYNAMODB_TABLE}).promise();
     if(!result.Items)
-      return callback(null, response(500, {
+      return callback(null, response(404, {
         status:'error',
         error: "No existe usuario"
       }))
@@ -70,16 +69,17 @@ export const getUser = async (event, context, callback) => {
   try{
 
     const id = event.pathParameters.user_id;
-
     const params = {
       Key: {
         id: id
       },
       TableName: DYNAMODB_TABLE
     };
+    console.log("params: ",params)
     let result = await clientDynamoDb.get(params).promise();
+    console.log("result: ",result)
     if(!result.Item)
-      return callback(null, response(500, {
+      return callback(null, response(404, {
         status:'error',
         error: "No existe Usuario."
       }))
@@ -114,9 +114,9 @@ export const updateUser = async (event, context, callback) => {
 
     const result = await clientDynamoDb.get(paramsVerifyId).promise();
     if(!result.Item)
-      return callback(null, response(500, {
+      return callback(null, response(404, {
         status:'error',
-        error: "No existe usuario"
+        error: "No existe usuario."
     }))
     
     const params = {
@@ -164,7 +164,7 @@ export const deleteUser = async (event, context, callback) => {
     };
     let result = await clientDynamoDb.delete(params).promise();
     if(result.ConsumedCapacity)
-      return callback(null, response(500, {
+      return callback(null, response(404, {
         status:'error',
         error: "No existe usuario"
       }))

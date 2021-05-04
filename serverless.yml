@@ -12,7 +12,9 @@ custom:
     httpPort: 3300
     lambdaPort: 3302
   webpack:
-    includeModules: false
+    # includeModules: false
+    # webpackConfig: './webpack.config.js'
+    includeModules: true
 
 plugins:
   - serverless-dynamodb-local
@@ -26,7 +28,7 @@ provider:
   runtime: nodejs12.x
   lambdaHashingVersion: 20201221
 
-  stage: stage
+  stage: dev
   region: us-east-2
 
   resources:
@@ -61,7 +63,7 @@ functions:
       - http:
           path: /endpoint/v1/users
           method: get
-          # cors: true
+          cors: true
           # authorizer: aws_iam
   
   postUser:
@@ -73,7 +75,7 @@ functions:
       - http:
           path: /endpoint/v1/users
           method: post
-          # cors: true
+          cors: true
           # authorizer: aws_iam
 
   getUser:
@@ -85,7 +87,7 @@ functions:
     - http:
         path: /endpoint/v1/users/{user_id}
         method: get
-        # cors: true
+        cors: true
         # authorizer: aws_iam
 
   updateUser:
@@ -97,7 +99,7 @@ functions:
     - http:
         path: /endpoint/v1/users/{user_id}
         method: put
-        # cors: true
+        cors: true
         # authorizer: aws_iam
 
   deleteUser:
@@ -109,7 +111,7 @@ functions:
     - http:
         path: /endpoint/v1/users/{user_id}
         method: delete
-        # cors: true
+        cors: true
         # authorizer: aws_iam
 
   getApiStartWardsPersons:
@@ -121,4 +123,4 @@ functions:
     - http:
         path: /endpoint/v1/startwards/persons/{person_id}
         method: get
-        # cors: true
+        cors: true

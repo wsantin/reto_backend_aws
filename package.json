@@ -18,6 +18,7 @@
   "dependencies": {
     "aws-sdk": "^2.897.0",
     "axios": "^0.21.1",
+    "serverless": "^2.39.1",
     "serverless-webpack": "^5.4.2",
     "uuid": "^8.3.2"
   },
